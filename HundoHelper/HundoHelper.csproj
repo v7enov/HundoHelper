@@ -70,6 +70,7 @@
     <Compile Include="Models\MissionThread.cs" />
     <Compile Include="Models\HiddenPackage.cs" />
     <Compile Include="Models\Robbery.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\TaxiCoordinates.cs" />
     <Compile Include="Models\UniqueStuntJump.cs" />
     <Compile Include="SettingsWindow.xaml.cs">

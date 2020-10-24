@@ -10,6 +10,9 @@ namespace HundoHelper.Models
         private string _name;
 
         public USJLocation Location;
+
+        public event NameChanged OnNameChanged;
+
         public int IndexInMemory => (int)Location;
         public bool IsDone { get; private set; }
         public string Name {
@@ -20,11 +23,14 @@ namespace HundoHelper.Models
             }
             set {
                 if (value != _name)
+                {
                     _name = value;
+                    OnNameChanged?.Invoke();
+                }
             }
         }
 
-    public int OrderIndex { get; set; }
+        public int OrderIndex { get; set; }
 
         public void Update()
         {

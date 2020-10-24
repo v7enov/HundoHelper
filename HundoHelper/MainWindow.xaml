@@ -42,7 +42,7 @@
         </Grid.RowDefinitions>
 
         <Menu x:Name="MenuTop" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" VerticalAlignment="Top">
-            <MenuItem Header="Settings" />
+            <MenuItem Header="Settings" Click="SettingsMenuItem_Click" />
             <MenuItem Header="Edit collectibles properties" Click="MenuItem_Click" />
         </Menu>
 

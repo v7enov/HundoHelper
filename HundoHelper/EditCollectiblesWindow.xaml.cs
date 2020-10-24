@@ -15,12 +15,22 @@ namespace HundoHelper
     public partial class EditCollectiblesWindow : Window, INotifyPropertyChanged
     {
         private ICollectible _selectedCollectible;
+        private bool _saveChangesEnabled;
+
+        public bool SaveChangesEnabled {
+            get => _saveChangesEnabled;
+            set {
+                _saveChangesEnabled = value;
+                OnPropertyChanged(nameof(SaveChangesEnabled));
+            }
+        }
 
         public ICollectible SelectedCollectible {
             get => _selectedCollectible;
             set {
                 _selectedCollectible = value;
                 OnPropertyChanged(nameof(SelectedCollectible));
+                SelectedCollectible.OnNameChanged += SetUnsaved;
             }
         }
         private IList<HiddenPackage> _hiddenPackages = new ObservableCollection<HiddenPackage>();
@@ -40,14 +50,29 @@ namespace HundoHelper
 
             packagesListBox.DataContext = _hiddenPackages;
             packagesListBox.SelectionChanged += PackagesListBox_SelectionChanged;
+            packagesListBox.OnItemMoved += SetUnsaved;
 
             usjsListBox.DataContext = _usjsPackages;
             usjsListBox.SelectionChanged += PackagesListBox_SelectionChanged;
+            usjsListBox.OnItemMoved += SetUnsaved;
 
             robberiesListBox.DataContext = _robberiesPackages;
             robberiesListBox.SelectionChanged += PackagesListBox_SelectionChanged;
+            robberiesListBox.OnItemMoved += SetUnsaved;
         }
 
+        private void SetUnsaved()
+        {
+            SaveChangesEnabled = true;
+        }
+
+
+        private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
+        {
+            CheckList.SaveCollectibles();
+            SaveChangesEnabled = false;
+            MessageBox.Show("Changes succesfully saved!");
+        }
 
         private void PackagesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

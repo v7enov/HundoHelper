@@ -30,7 +30,19 @@ namespace HundoHelper
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var p = new EditCollectiblesWindow();
+            var p = new EditCollectiblesWindow
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
+            p.Show();
+        }
+
+        private void SettingsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var p = new SettingsWindow()
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
             p.Show();
         }
     }

@@ -16,11 +16,13 @@
             <ColumnDefinition Width="10"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="500"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
         </Grid.RowDefinitions>
+
+        <Button Name="btnSaveChanges"  Grid.Column="2" Grid.Row="0" IsEnabled="{Binding SaveChangesEnabled}" Width="100" Margin="85,2,85,1" Click="btnSaveChanges_Click">Save changes!</Button>
 
         <TabControl Background="DarkGray" Grid.Column="1" Grid.Row="1">
             <TabItem Background="DarkGray" BorderBrush="Black" Header="Packages">
@@ -52,7 +54,7 @@
             </TabItem>
         </TabControl>
 
-        <TextBlock Grid.Column="2" FontSize="15" Grid.Row="1" HorizontalAlignment="Center">Item name: </TextBlock>
+        <TextBlock Grid.Column="2" FontSize="15" Grid.Row="1" HorizontalAlignment="Center">Item name:</TextBlock>
         <TextBox Grid.Column="2" FontSize="15" Grid.Row="1" Width="250" Height="30" VerticalAlignment="Top" Margin="0,25,0,0" Text="{Binding SelectedCollectible.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
 
     </Grid>

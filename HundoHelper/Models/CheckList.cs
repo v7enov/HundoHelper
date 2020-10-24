@@ -36,6 +36,7 @@ namespace HundoHelper.Models
         public static List<ICollectible> collectibles = new List<ICollectible>();
         private Task tbdCounterTask;
         private bool tbdTaskTerminated;
+        public static SettingsModel settings;
 
         public int PackagesCollected {
             get => packagesCollected;
@@ -175,6 +176,7 @@ namespace HundoHelper.Models
             vcHandleTimer.Elapsed += VcHandleTimer_Elapsed;
             vcHandleTimer.Start();
             LoadCollectibles();
+            LoadSettings();
             checkTimer.Elapsed += CheckTimer_Elapsed;
             checkTimer.Start();
         }
@@ -210,6 +212,23 @@ namespace HundoHelper.Models
             }
         }
 
+        public static void SaveSettings()
+        {
+            File.WriteAllText("settings.json", JsonConvert.SerializeObject(settings));
+        }
+
+        public void LoadSettings()
+        {
+            settings = JsonConvert.DeserializeObject<SettingsModel>(File.ReadAllText("settings.json"));
+        }
+
+        public static void SaveCollectibles()
+        {
+            File.WriteAllText("packages.json", JsonConvert.SerializeObject(collectibles.OfType<HiddenPackage>()));
+            File.WriteAllText("usjs.json", JsonConvert.SerializeObject(collectibles.OfType<UniqueStuntJump>()));
+            File.WriteAllText("robberies.json", JsonConvert.SerializeObject(collectibles.OfType<Robbery>()));
+        }
+
         private void ReadProperties()
         {
             PackagesCollected = Utils.ReadStruct<int>(Utils.memoryAddresses[nameof(PackagesCollected)]);
@@ -226,26 +245,34 @@ namespace HundoHelper.Models
 
             TaxiCoordinate = Utils.ReadStruct<TaxiCoordinates>(Utils.memoryAddresses[nameof(TaxiCoordinates)], false);
 
-            /*
-            var lastMission = Utils.GetLastMissionThread(Utils.memoryAddresses["lastMissionThreadPointer"]);
-            LastMissionName = lastMission.Thread_id;
 
-
-            if (lastMission.Thread_id == "bmx_1" && !tbdTaskTerminated)
+            if (settings.ReadLastMission)
             {
-                if (tbdCounterTask != null)
+                LastMissionName = Utils.GetLastMissionThread(Utils.memoryAddresses["lastMissionThreadPointer"]).Thread_id;
+            }
+
+            if (settings.TbdCounterEnabled)
+            {
+
+                var lastMission = Utils.GetLastMissionThread(Utils.memoryAddresses["lastMissionThreadPointer"]);
+                LastMissionName = lastMission.Thread_id;
+
+                if (lastMission.Thread_id == "bmx_1" && !tbdTaskTerminated)
                 {
-                    if (!(tbdCounterTask.Status == TaskStatus.Running))
+                    if (tbdCounterTask != null)
+                    {
+                        if (!(tbdCounterTask.Status == TaskStatus.Running))
+                        {
+                            StartTask();
+                        }
+                    }
+                    else
                     {
                         StartTask();
                     }
                 }
-                else
-                {
-                    StartTask();
-                }
             }
-            */
+
 
             void StartTask()
             {

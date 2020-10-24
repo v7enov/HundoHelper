@@ -12,6 +12,9 @@ namespace HundoHelper.Models
         public float z;
         public byte Type;
         private string _name;
+
+        public event NameChanged OnNameChanged;
+
         public bool NotPickedUp => Type == 6;
 
         public int Index => (int)Location;
@@ -39,7 +42,10 @@ namespace HundoHelper.Models
             }
             set {
                 if (value != _name)
+                {
                     _name = value;
+                    OnNameChanged?.Invoke();
+                }
             }
         }
 

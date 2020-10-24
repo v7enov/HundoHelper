@@ -13,10 +13,13 @@ using System.Windows.Media;
 
 namespace HundoHelper
 {
+    public delegate void OnListBoxItemMoved();
     public class DragAndDropListBox<T> : ListBox
       where T : class
     {
         private Point _dragStartPoint;
+
+        public event OnListBoxItemMoved OnItemMoved;
 
         private P FindVisualParent<P>(DependencyObject child)
             where P : DependencyObject
@@ -100,6 +103,7 @@ namespace HundoHelper
                     items.RemoveAt(sourceIndex);
                     ((ICollectible)items[targetIndex]).OrderIndex = targetIndex;
                     Debug.WriteLine($"after: {((ICollectible)items[targetIndex]).Name} : {((ICollectible)items[targetIndex]).OrderIndex}");
+                    OnItemMoved.Invoke();
                 }
             }
             else
@@ -114,6 +118,7 @@ namespace HundoHelper
                         items.RemoveAt(removeIndex);
                         ((ICollectible)items[targetIndex]).OrderIndex = targetIndex;
                         Debug.WriteLine($"after: {((ICollectible)items[targetIndex]).Name} : {((ICollectible)items[targetIndex]).OrderIndex}");
+                        OnItemMoved.Invoke();
                     }
                 }
             }

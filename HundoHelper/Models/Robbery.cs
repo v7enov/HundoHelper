@@ -8,6 +8,9 @@ namespace HundoHelper.Models
     {
         private readonly IntPtr PointerToArrayStart = (IntPtr)0x81E288;
         private string _name;
+
+        public event NameChanged OnNameChanged;
+
         public RobberyLocation Location { get; set; }
         public string Name {
             get {
@@ -17,7 +20,10 @@ namespace HundoHelper.Models
             }
             set {
                 if (value != _name)
+                {
                     _name = value;
+                    OnNameChanged?.Invoke();
+                }
             }
         }
         public int IndexInMemory => (int)Location;
