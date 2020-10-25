@@ -34,8 +34,8 @@ namespace HundoHelper
             }
         }
         private IList<HiddenPackage> _hiddenPackages = new ObservableCollection<HiddenPackage>();
-        private IList<UniqueStuntJump> _usjsPackages = new ObservableCollection<UniqueStuntJump>();
-        private IList<Robbery> _robberiesPackages = new ObservableCollection<Robbery>();
+        private IList<UniqueStuntJump> _usjs = new ObservableCollection<UniqueStuntJump>();
+        private IList<Robbery> _robberies = new ObservableCollection<Robbery>();
         public EditCollectiblesWindow()
         {
             InitializeComponent();
@@ -44,19 +44,19 @@ namespace HundoHelper
             foreach(var p in CheckList.collectibles.OfType<HiddenPackage>().OrderBy(p => p.OrderIndex))
                 _hiddenPackages.Add(p);
             foreach (var p in CheckList.collectibles.OfType<UniqueStuntJump>().OrderBy(p => p.OrderIndex))
-                _usjsPackages.Add(p);
+                _usjs.Add(p);
             foreach (var p in CheckList.collectibles.OfType<Robbery>().OrderBy(p => p.OrderIndex))
-                _robberiesPackages.Add(p);
+                _robberies.Add(p);
 
             packagesListBox.DataContext = _hiddenPackages;
             packagesListBox.SelectionChanged += PackagesListBox_SelectionChanged;
             packagesListBox.OnItemMoved += SetUnsaved;
 
-            usjsListBox.DataContext = _usjsPackages;
+            usjsListBox.DataContext = _usjs;
             usjsListBox.SelectionChanged += PackagesListBox_SelectionChanged;
             usjsListBox.OnItemMoved += SetUnsaved;
 
-            robberiesListBox.DataContext = _robberiesPackages;
+            robberiesListBox.DataContext = _robberies;
             robberiesListBox.SelectionChanged += PackagesListBox_SelectionChanged;
             robberiesListBox.OnItemMoved += SetUnsaved;
         }
@@ -78,15 +78,19 @@ namespace HundoHelper
         {
             if (e.Source is PackagesDragAndDropListBox)
             {
-                SelectedCollectible = (ICollectible)packagesListBox.SelectedItem;
+                if (packagesListBox.SelectedItem != null)
+                    SelectedCollectible = (ICollectible)packagesListBox.SelectedItem;
+                
             }
             else if (e.Source is UsjsDragAndDropListBox)
             {
-                SelectedCollectible = (ICollectible)usjsListBox.SelectedItem;
+                if (usjsListBox.SelectedItem != null)
+                    SelectedCollectible = (ICollectible)usjsListBox.SelectedItem;
             }
             else if (e.Source is RobberiesDragAndDropListBox)
             {
-                SelectedCollectible = (ICollectible)robberiesListBox.SelectedItem;
+                if (robberiesListBox.SelectedItem != null)
+                    SelectedCollectible = (ICollectible)robberiesListBox.SelectedItem;
             }
         }
 

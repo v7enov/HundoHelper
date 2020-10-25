@@ -67,7 +67,7 @@ namespace HundoHelper
                 var lbi = FindVisualParent<ListBoxItem>(((DependencyObject)e.OriginalSource));
                 if (lbi != null)
                 {
-                    DragDrop.DoDragDrop(lbi, lbi.DataContext, DragDropEffects.Move);
+                     DragDrop.DoDragDrop(lbi, lbi.DataContext, DragDropEffects.Move);
                 }
             }
         }
@@ -98,11 +98,13 @@ namespace HundoHelper
                 var items = this.DataContext as IList<T>;
                 if (items != null)
                 {
-                    Debug.WriteLine($"before: {((ICollectible)items[sourceIndex]).Name} : {((ICollectible)items[sourceIndex]).OrderIndex}");
+                    ((ICollectible)items[targetIndex]).OrderIndex = sourceIndex;
+                    ((ICollectible)items[sourceIndex]).OrderIndex = targetIndex;
+                    Debug.WriteLine($"item at target index: {((ICollectible)items[targetIndex]).Name} Order index becomes: {sourceIndex}");
+                    Debug.WriteLine($"item at source index: {((ICollectible)items[sourceIndex]).Name} Order index becomes: {targetIndex}");
+
                     items.Insert(targetIndex + 1, source);
                     items.RemoveAt(sourceIndex);
-                    ((ICollectible)items[targetIndex]).OrderIndex = targetIndex;
-                    Debug.WriteLine($"after: {((ICollectible)items[targetIndex]).Name} : {((ICollectible)items[targetIndex]).OrderIndex}");
                     OnItemMoved.Invoke();
                 }
             }
@@ -114,10 +116,13 @@ namespace HundoHelper
                     int removeIndex = sourceIndex + 1;
                     if (items.Count + 1 > removeIndex)
                     {
+                        ((ICollectible)items[targetIndex]).OrderIndex = targetIndex;
+                        ((ICollectible)items[sourceIndex]).OrderIndex = sourceIndex;
+                        Debug.WriteLine($"item at target index: {((ICollectible)items[targetIndex]).Name} Order index becomes: {sourceIndex}");
+                        Debug.WriteLine($"item at source index: {((ICollectible)items[sourceIndex]).Name} Order index becomes: {targetIndex}");
+
                         items.Insert(targetIndex, source);
                         items.RemoveAt(removeIndex);
-                        ((ICollectible)items[targetIndex]).OrderIndex = targetIndex;
-                        Debug.WriteLine($"after: {((ICollectible)items[targetIndex]).Name} : {((ICollectible)items[targetIndex]).OrderIndex}");
                         OnItemMoved.Invoke();
                     }
                 }
