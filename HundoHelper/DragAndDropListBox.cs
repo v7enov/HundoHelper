@@ -116,8 +116,8 @@ namespace HundoHelper
                     int removeIndex = sourceIndex + 1;
                     if (items.Count + 1 > removeIndex)
                     {
-                        ((ICollectible)items[targetIndex]).OrderIndex = targetIndex;
-                        ((ICollectible)items[sourceIndex]).OrderIndex = sourceIndex;
+                        ((ICollectible)items[targetIndex]).OrderIndex = sourceIndex;
+                        ((ICollectible)items[sourceIndex]).OrderIndex = targetIndex;
                         Debug.WriteLine($"item at target index: {((ICollectible)items[targetIndex]).Name} Order index becomes: {sourceIndex}");
                         Debug.WriteLine($"item at source index: {((ICollectible)items[sourceIndex]).Name} Order index becomes: {targetIndex}");
 
